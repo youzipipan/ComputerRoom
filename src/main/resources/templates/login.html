@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>登陆</title>
+    <!-- Custom Theme files -->
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all"/>
+    <!-- Custom Theme files -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="keywords"
+          content="Login form web template, Sign up Web Templates, Flat Web Templates, Login signup Responsive web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design"/>
+    <!--Google Fonts-->
+    <!--<link href='http://fonts.useso.com/css?family=Roboto:500,900italic,900,400italic,100,700italic,300,700,500italic,100italic,300italic,400' rel='stylesheet' type='text/css'>-->
+    <!--<link href='http://fonts.useso.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>-->
+    <!--Google Fonts-->
+    <link rel="stylesheet" href="css/example.css">
+    <link rel="stylesheet" href="css/sweet-alert.css">
+    <script src="js/sweet-alert.js"></script>
+    <script src="js/jquery.min.js"></script>
+</head>
+<body>
+<div class="login">
+    <div class="login-top">
+        <h1>用户登陆</h1>
+        <form class="myform" action="/login" method="post">
+            <input id="username" name="username" type="text" value="用户名" onfocus="this.value = '';"
+                   onblur="if (this.value == '') {this.value = '用户名';}">
+            <input id="password" name="password" type="password" value="password" onfocus="this.value = '';"
+                   onblur="if (this.value == '') {this.value = 'password';}">
+            <div class="forgot">
+                <a href="/register">我要注册</a>
+                <button id="login_but" class="login_but" type="button" onclick="onSubmit()" value="登陆">登陆</button>
+            </div>
+        </form>
+    </div>
+    <a th:href="${#httpServletRequest.getScheme() + '://' + #httpServletRequest.getServerName() + ':' + #request.getServerPort()  + #request.getContextPath() + '/'} "
+       id="contextPath"></a>
+</div>
+</body>
+<script th:inline="javascript">
+
+   var contextPath = $('#contextPath').attr('href');
+   console.info(contextPath);
+    function onSubmit() {
+
+        $.ajax({
+            url: "/login",
+            type: "post",
+            datatype: "json",
+            data: $('form').serialize(),
+            success: function (result) {
+                if (result.errorMessage) {
+                    swal("Oops...", result.errorMessage, "error");
+                }
+                if (result.type) {
+                    console.log(result.type);
+                    window.location.href = contextPath + result.type;
+                }
+            }
+        });
+    }
+
+</script>
+</html>
