@@ -1,13 +1,12 @@
 package com.example.login.controller;
 
-import com.example.login.entities.Personnel;
+import com.example.entity.Personnel;
 import com.example.login.service.LoginService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.util.HashMap;

@@ -1,6 +1,6 @@
 package com.example.login.service.impl;
 
-import com.example.login.entities.Personnel;
+import com.example.entity.Personnel;
 import com.example.login.repository.LoginRepository;
 import com.example.login.service.LoginService;
 import org.springframework.stereotype.Service;

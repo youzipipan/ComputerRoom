@@ -1,6 +1,6 @@
 package com.example.login.service;
 
-import com.example.login.entities.Personnel;
+import com.example.entity.Personnel;
 
 public interface LoginService {
 
