@@ -5,8 +5,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import lombok.Data;
-
-import javax.annotation.sql.DataSourceDefinition;
 import java.util.Objects;
 
 @Entity
