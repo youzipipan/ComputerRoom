@@ -5,6 +5,7 @@ import com.example.login.repository.RoomRepository;
 import com.example.login.service.RoomService;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -19,6 +20,7 @@ public class RoomServiceImpl implements RoomService {
      * 查询全部教室
      * @return
      */
+    @Transactional
     @Override
     public String queryRoom() {
 

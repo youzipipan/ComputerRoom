@@ -24,7 +24,7 @@ public class Computer {
     @Column
     private String useState; //使用状态(0未使用，1正在使用)
     @Column
-    private Date lastUseState;//最后一次使用时间
+    private String lastUseState;//最后一次使用时间
     @Column
     private String temperature;//温度
     @Column

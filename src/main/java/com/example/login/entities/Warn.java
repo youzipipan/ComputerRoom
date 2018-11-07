@@ -22,6 +22,6 @@ public class Warn {
     @Column
     private String doState;		//处理状态（0未处理 1已处理 2自动处理）
     @Column
-    private Date createTime;	//发生警报时间（YYYY-mm-dd hh：mm：ss）
+    private String createTime;	//发生警报时间（YYYY-mm-dd hh：mm：ss）
 
 }
