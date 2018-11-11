@@ -9,6 +9,8 @@ public class RoomControler {
 
     public void Test(){
 
+        System.out.println("success");
+
     }
 
 }
