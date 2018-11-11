@@ -59,6 +59,7 @@ public class ComputerServiceImpl implements ComputerService {
         computerOverview.setUseCount(String.valueOf(useCount));
         computerOverview.setBadCount(String.valueOf(badCount));
         computerOverview.setWarnCount(String.valueOf(warnList.size()));
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("state", "0");
         jsonObject.put("msg", "查询成功");
