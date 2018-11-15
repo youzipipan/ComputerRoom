@@ -1,16 +1,19 @@
 package com.example.login.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping
 public class RoomControler {
 
-    public void Test(){
+    @RequestMapping(value="index1")
+    public String Test(){
 
         System.out.println("success");
 
+        return "index";
     }
 
 }
