@@ -29,4 +29,12 @@ public interface ComputerRepository extends JpaRepository<Computer, String> {
     @Modifying
     @Query("update Computer c set c.useState='0' ,c.lastUseState=?1")
     void upfate3(String date);
+
+    @Modifying
+    @Query("update Computer c set c.lockState='1' where c.computerId=?1")
+    void updateLock(String id);
+
+    @Modifying
+    @Query("update Computer c set c.lockState='0' where c.computerId=?1")
+    void updateUnlock(String id);
 }

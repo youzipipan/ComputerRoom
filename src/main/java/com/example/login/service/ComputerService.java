@@ -28,4 +28,24 @@ public interface ComputerService {
      * @return
      */
     String powerOff(Machine machine) throws ParseException;
+
+    /**
+     * 显示全部信息
+     * @return
+     */
+    String showAll();
+
+    /**
+     * 强制下机/锁机
+     * @param id
+     * @return
+     */
+    String lock(String id);
+
+    /**
+     * 解锁
+     * @param id
+     * @return
+     */
+    String unlock(String id,String userName,String passWord);
 }

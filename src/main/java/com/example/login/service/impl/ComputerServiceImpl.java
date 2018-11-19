@@ -1,10 +1,12 @@
 package com.example.login.service.impl;
 
 import com.example.login.entities.Computer;
+import com.example.login.entities.Teacher;
 import com.example.login.entities.Warn;
 import com.example.login.model.ComputerOverview;
 import com.example.login.model.Machine;
 import com.example.login.repository.ComputerRepository;
+import com.example.login.repository.TeacherRepository;
 import com.example.login.repository.WarnRepository;
 import com.example.login.service.ComputerService;
 import net.sf.json.JSONObject;
@@ -15,10 +17,7 @@ import javax.annotation.Resource;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
@@ -29,6 +28,9 @@ public class ComputerServiceImpl implements ComputerService {
 
     @Resource
     private WarnRepository warnRepository;
+
+    @Resource
+    private TeacherRepository teacherRepository;
 
     /**
      * 计算机总览
@@ -219,5 +221,72 @@ public class ComputerServiceImpl implements ComputerService {
                 return jsonObject.toString();
             }
         }
+    }
+
+    /**
+     * 显示全部信息
+     * @return
+     */
+    @Transactional
+    @Override
+    public String showAll() {
+
+        List<Computer> computerList = computerRepository.findAll();
+        List<Computer> computers = new ArrayList<>();
+        computerList.forEach(computer -> {
+            Computer computer1 = new Computer();
+            computer1.setId(computer.getId());
+            computer1.setComputerId(computer.getComputerId());
+            computer1.setRoomId(computer.getRoomId());
+            computer1.setUseState(computer.getUseState());
+            computer1.setLockState(computer.getLockState());
+            computer1.setLastUseState(computer.getLastUseState());
+            computer1.setTemperature(computer.getTemperature());
+            computer1.setCpu(computer.getCpu());
+            computers.add(computer1);
+        });
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("state", "0");
+        jsonObject.put("msg", "开机成功");
+        jsonObject.put("data",computers);
+        return jsonObject.toString();
+    }
+
+    /**
+     * 强制下机/锁机
+     * @param id
+     * @return
+     */
+    @Transactional
+    @Override
+    public String lock(String id) {
+
+        computerRepository.updateLock(id);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("state", "0");
+        jsonObject.put("msg", "锁机成功");
+        return jsonObject.toString();
+    }
+
+    /**
+     * 解锁
+     * @param id
+     * @return
+     */
+    @Transactional
+    @Override
+    public String unlock(String id,String userName,String passWord) {
+
+        Teacher teacher = teacherRepository.findTeacher(userName,passWord);
+        JSONObject jsonObject = new JSONObject();
+        if(teacher!=null){
+            computerRepository.updateUnlock(id);
+            jsonObject.put("state", "0");
+            jsonObject.put("msg", "解锁成功");
+        }else {
+            jsonObject.put("state", "0");
+            jsonObject.put("msg", "负责人信息错误，解锁失败");
+        }
+        return jsonObject.toString();
     }
 }

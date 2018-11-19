@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping
 public class RoomControler {
 
-
     @RequestMapping(value="/index1")
     public String index(){
 
