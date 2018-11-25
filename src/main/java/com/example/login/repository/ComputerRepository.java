@@ -15,11 +15,11 @@ public interface ComputerRepository extends JpaRepository<Computer, String> {
     Computer findByComputerId(String computerId);
 
     @Modifying
-    @Query("update Computer c set c.useState='1' ,c.lastUseState=null where c.computerId=?1")
+    @Query("update Computer c set c.useState='1' ,c.lastUseState=null where c.id=?1")
     void update0(String id);
 
     @Modifying
-    @Query("update Computer c set c.useState='0' ,c.lastUseState=?2 where c.computerId=?1")
+    @Query("update Computer c set c.useState='0' ,c.lastUseState=?2 where c.id=?1")
     void update1(String id, String date);
 
     @Modifying
@@ -31,10 +31,13 @@ public interface ComputerRepository extends JpaRepository<Computer, String> {
     void upfate3(String date);
 
     @Modifying
-    @Query("update Computer c set c.lockState='1' where c.computerId=?1")
+    @Query("update Computer c set c.lockState='1' where c.id=?1")
     void updateLock(String id);
 
     @Modifying
-    @Query("update Computer c set c.lockState='0' where c.computerId=?1")
+    @Query("update Computer c set c.lockState='0' where c.id=?1")
     void updateUnlock(String id);
+
+    @Query("select c from Computer c where c.id = ?1 ")
+    Computer findComputerById(String id);
 }

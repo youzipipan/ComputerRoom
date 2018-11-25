@@ -1,11 +1,13 @@
 package com.example.login.service.impl;
 
 import com.example.login.entities.Computer;
+import com.example.login.entities.Room;
 import com.example.login.entities.Teacher;
 import com.example.login.entities.Warn;
 import com.example.login.model.ComputerOverview;
 import com.example.login.model.Machine;
 import com.example.login.repository.ComputerRepository;
+import com.example.login.repository.RoomRepository;
 import com.example.login.repository.TeacherRepository;
 import com.example.login.repository.WarnRepository;
 import com.example.login.service.ComputerService;
@@ -31,6 +33,9 @@ public class ComputerServiceImpl implements ComputerService {
 
     @Resource
     private TeacherRepository teacherRepository;
+
+    @Resource
+    private RoomRepository roomRepository;
 
     /**
      * 计算机总览
@@ -87,6 +92,8 @@ public class ComputerServiceImpl implements ComputerService {
         if (computer1 != null) {
             return newlyBuild(roomId);
         } else {
+            computer.setUseState("0");
+            computer.setLockState("0");
             computer.setComputerId(computerId);
             computer.setCpu(String.valueOf(cpu));
             computer.setTemperature(String.valueOf(temperature));
@@ -169,7 +176,7 @@ public class ComputerServiceImpl implements ComputerService {
                 computerRepository.upfate3(date);
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("state", "0");
-                jsonObject.put("msg", "一键关机机成功");
+                jsonObject.put("msg", "一键关机成功");
                 return jsonObject.toString();
             } else {
                 JSONObject jsonObject = new JSONObject();
@@ -180,7 +187,7 @@ public class ComputerServiceImpl implements ComputerService {
         } else {
             SimpleDateFormat df = new SimpleDateFormat("HH:mm");
             Date begin = df.parse("08:00");
-            Date end = df.parse("18:00");
+            Date end = df.parse("16:59");
             Date now = df.parse(df.format(new Date()));
             if (now.after(begin) && now.before(end)) {
                 if ("0".equals(machine.getState())) {
@@ -211,8 +218,9 @@ public class ComputerServiceImpl implements ComputerService {
                 SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String date = dfs.format(new Date());
                 warn.setCreateTime(date);
-                Computer computer = computerRepository.findByComputerId(machine.getId());
-                String warnMsg = computer.getRoomId() + machine.getId() + "号计算机在非使用时间使用";
+                Computer computer = computerRepository.findComputerById(machine.getId());
+                Room room = roomRepository.findRoomById(computer.getRoomId());
+                String warnMsg = room.getName()+"的"+ computer.getComputerId() + "号计算机在非使用时间使用";
                 warn.setWarnMsg(warnMsg);
                 warnRepository.save(warn);
                 JSONObject jsonObject = new JSONObject();
@@ -286,6 +294,29 @@ public class ComputerServiceImpl implements ComputerService {
         }else {
             jsonObject.put("state", "0");
             jsonObject.put("msg", "负责人信息错误，解锁失败");
+        }
+        return jsonObject.toString();
+    }
+
+
+    /**
+     * 根据id查找计算机
+     * @param id
+     * @return
+     */
+    @Transactional
+    @Override
+    public String getComputerById(String id) {
+
+        Computer computer = computerRepository.findComputerById(id);
+        JSONObject jsonObject = new JSONObject();
+        if(computer!=null){
+            jsonObject.put("state", "0");
+            jsonObject.put("msg", "查询成功");
+            jsonObject.put("data", computer);
+        }else {
+            jsonObject.put("state", "1");
+            jsonObject.put("msg", "未查询到计算机");
         }
         return jsonObject.toString();
     }

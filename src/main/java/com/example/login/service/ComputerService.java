@@ -48,4 +48,11 @@ public interface ComputerService {
      * @return
      */
     String unlock(String id,String userName,String passWord);
+
+    /**
+     * 根据Id查找计算机
+     * @param id
+     * @return
+     */
+    public String getComputerById(String id);
 }

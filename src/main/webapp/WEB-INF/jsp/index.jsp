@@ -1,4 +1,5 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -98,13 +99,13 @@
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <li class="active">
-                        <a href="">
+                        <a href="index">
                             <i class="now-ui-icons design_app"></i>
                             <p>首页</p>
                         </a>
                     </li>
                     <li>
-                        <a href="">
+                        <a href="computerManerger">
                             <i class="now-ui-icons education_atom"></i>
                             <p>机房管理</p>
                         </a>
@@ -138,8 +139,8 @@
                             <i class="now-ui-icons tech_laptop glyphicon"></i>
                         </div>
                         <div class="four-text">
-                            <h3>计算机总数/使用数</h3>
-                            <h4> 24,420  </h4>
+                            <h3>计算机总数</h3>
+                            <h4> ${json.computerCount}  </h4>
 
                         </div>
 
@@ -152,7 +153,7 @@
                         </div>
                         <div class="four-text">
                             <h3>已使用计算机数</h3>
-                            <h4>14,430</h4>
+                            <h4>${json.useCount}</h4>
 
                         </div>
 
@@ -165,7 +166,7 @@
                         </div>
                         <div class="four-text">
                             <h3>当天警报数</h3>
-                            <h4>15,520</h4>
+                            <h4>${json.warnCount}</h4>
 
                         </div>
 
@@ -178,7 +179,7 @@
                         </div>
                         <div class="four-text">
                             <h3>故障计算机数</h3>
-                            <h4>12,430</h4>
+                            <h4>${json.badCount}</h4>
 
                         </div>
 

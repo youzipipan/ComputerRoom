@@ -1,0 +1,46 @@
+body,html{
+            margin:0;
+            padding:0;
+            background: #fff0f0;
+        }
+        .title{
+            background: #ffa172;
+            color:#fff;
+            box-shadow: 2px 2px 4px rgba(0,0,0,.25);
+            text-align: center;
+            height:3rem;
+            line-height:3rem;
+        }
+        .content{
+            text-align:center;
+        }
+        .newComputer{
+            background: #ff8181;
+        }
+        .newComputer:active{
+            background:#d85e5e;
+            transition:.2s;
+        }
+        .ground{
+            background: #5ae67a;
+        }
+        .ground:active{
+            background: #26c54a;
+        }
+        .rad{
+            border-radius:10px;
+            height:7rem;
+            width:70%;
+            margin:0 auto;
+            margin-top:2rem;
+            color:#fff;
+            line-height:7rem;
+            box-shadow: 2px 2px 4px rgba(0,0,0,.25);
+            transition:.2s;
+        }
+        .back{
+            height:1rem;
+            float:left;
+            margin-top:1rem;
+            margin-left:0.5rem;
+        }

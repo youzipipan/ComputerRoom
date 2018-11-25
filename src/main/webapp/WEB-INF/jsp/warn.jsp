@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>.
 <!DOCTYPE html>
 <html lang="en">
 
@@ -35,13 +37,13 @@
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <li>
-                        <a href="../examples/index.html">
+                        <a href="index">
                             <i class="now-ui-icons design_app"></i>
                             <p>首页</p>
                         </a>
                     </li>
                     <li>
-                        <a href="../examples/computerManerger.html">
+                        <a href="computerManerger">
                             <i class="now-ui-icons education_atom"></i>
                             <p>机房管理</p>
                         </a>
