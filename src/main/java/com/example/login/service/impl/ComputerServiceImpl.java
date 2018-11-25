@@ -172,8 +172,13 @@ public class ComputerServiceImpl implements ComputerService {
                 jsonObject.put("msg", "一键开机成功");
                 return jsonObject.toString();
             } else if ("3".equals(machine.getState())) {
-                String date = df.format(new Date());
-                computerRepository.upfate3(date);
+                List<Computer> computerList = computerRepository.findAll();
+                computerList.forEach(e ->{
+                    if(e.getUseState()!=null && "1".equals(e.getUseState())){
+                        String date = df.format(new Date());
+                        computerRepository.upfate3(date,e.getId());
+                    }
+                });
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("state", "0");
                 jsonObject.put("msg", "一键关机成功");
