@@ -4,6 +4,7 @@ import com.example.login.entities.Computer;
 import com.example.login.entities.Room;
 import com.example.login.entities.Teacher;
 import com.example.login.entities.Warn;
+import com.example.login.model.ComputerInformation;
 import com.example.login.model.ComputerOverview;
 import com.example.login.model.Machine;
 import com.example.login.repository.ComputerRepository;
@@ -245,18 +246,19 @@ public class ComputerServiceImpl implements ComputerService {
     public String showAll() {
 
         List<Computer> computerList = computerRepository.findAll();
-        List<Computer> computers = new ArrayList<>();
+        List<ComputerInformation> computers = new ArrayList<>();
         computerList.forEach(computer -> {
-            Computer computer1 = new Computer();
-            computer1.setId(computer.getId());
-            computer1.setComputerId(computer.getComputerId());
-            computer1.setRoomId(computer.getRoomId());
-            computer1.setUseState(computer.getUseState());
-            computer1.setLockState(computer.getLockState());
-            computer1.setLastUseState(computer.getLastUseState());
-            computer1.setTemperature(computer.getTemperature());
-            computer1.setCpu(computer.getCpu());
-            computers.add(computer1);
+            ComputerInformation computerInformation = new ComputerInformation();
+            computerInformation.setId(computer.getId());
+            computerInformation.setComputerId(computer.getComputerId());
+            Room room = roomRepository.findRoomById(computer.getRoomId());
+            computerInformation.setRoomId(room.getName());
+            computerInformation.setUseState(computer.getUseState());
+            computerInformation.setLockState(computer.getLockState());
+            computerInformation.setLastUseState(computer.getLastUseState());
+            computerInformation.setTemperature(computer.getTemperature());
+            computerInformation.setCpu(computer.getCpu());
+            computers.add(computerInformation);
         });
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("state", "0");
