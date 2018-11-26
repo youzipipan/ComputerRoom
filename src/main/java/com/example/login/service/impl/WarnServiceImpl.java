@@ -86,17 +86,24 @@ public class WarnServiceImpl implements WarnService {
     @Override
     public String handle(String id, String comId) {
 
-        warnRepository.update(id);
-        Computer computer = computerRepository.findByComputerId(comId);
+
+        Computer computer = computerRepository.findByIds(comId);
         List<TeacherRoom> teacherRoom = teacherRoomRepository.findTeacherRoom(computer.getRoomId());
+        if(teacherRoom==null || teacherRoom.size()<=0){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("state", "1");
+            jsonObject.put("msg", "该教室没有负责人，无法通知负责人进行处理");
+            return jsonObject.toString();
+        }
         Teacher teacher = teacherRepository.findTeacherById(teacherRoom.get(0).getTeacherId());
         Teacher teacher1 = new Teacher();
         teacher1.setName(teacher.getName());
         teacher1.setPhone(teacher.getPhone());
+        warnRepository.update(id);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("state", "0");
-        jsonObject.put("msg", "处理成功");
-        jsonObject.put("data",teacher);
+        jsonObject.put("msg", "处理成功,已通知"+teacher.getName()+"，联系方式："+teacher.getPhone()+"");
+        jsonObject.put("data",teacher1);
         return jsonObject.toString();
     }
 }

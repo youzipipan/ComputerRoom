@@ -13,6 +13,7 @@ import com.example.login.repository.TeacherRepository;
 import com.example.login.repository.WarnRepository;
 import com.example.login.service.ComputerService;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +23,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-
+@Transactional
 @Service
 public class ComputerServiceImpl implements ComputerService {
 
@@ -254,7 +255,7 @@ public class ComputerServiceImpl implements ComputerService {
             computerInformation.setId(computer.getId());
             computerInformation.setComputerId(computer.getComputerId());
             Room room = roomRepository.findRoomById(computer.getRoomId());
-            computerInformation.setRoomId(room.getName());
+            computerInformation.setRoom(room.getName());
             computerInformation.setUseState(computer.getUseState());
             computerInformation.setLockState(computer.getLockState());
             computerInformation.setLastUseState(computer.getLastUseState());
@@ -277,9 +278,16 @@ public class ComputerServiceImpl implements ComputerService {
     @Transactional
     @Override
     public String lock(String id) {
-
-        computerRepository.updateLock(id);
         JSONObject jsonObject = new JSONObject();
+        try {
+            computerRepository.updateLock(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            jsonObject.put("state", "1");
+            jsonObject.put("msg", "锁机失败");
+            return jsonObject.toString();
+        }
+
         jsonObject.put("state", "0");
         jsonObject.put("msg", "锁机成功");
         return jsonObject.toString();
@@ -292,10 +300,16 @@ public class ComputerServiceImpl implements ComputerService {
      */
     @Transactional
     @Override
-    public String unlock(String id,String userName,String passWord) {
+    public String unlock(String id,String userName,String passWord,String user) {
 
         Teacher teacher = teacherRepository.findTeacher(userName,passWord);
         JSONObject jsonObject = new JSONObject();
+        if(StringUtils.isNotBlank(user)){
+            computerRepository.updateUnlock(id);
+            jsonObject.put("state", "0");
+            jsonObject.put("msg", "解锁成功");
+            return jsonObject.toString();
+        }
         if(teacher!=null){
             computerRepository.updateUnlock(id);
             jsonObject.put("state", "0");
@@ -329,5 +343,15 @@ public class ComputerServiceImpl implements ComputerService {
             jsonObject.put("msg", "未查询到计算机");
         }
         return jsonObject.toString();
+    }
+
+    /**
+     * com更换教室
+     * @param comId
+     * @param roomId
+     */
+    @Override
+    public void editComputerToRoom(String comId, String roomId) {
+        computerRepository.updateComputerToRoom(comId,roomId);
     }
 }

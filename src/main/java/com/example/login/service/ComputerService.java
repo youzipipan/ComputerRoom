@@ -47,7 +47,7 @@ public interface ComputerService {
      * @param id
      * @return
      */
-    String unlock(String id,String userName,String passWord);
+    String unlock(String id,String userName,String passWord,String user);
 
     /**
      * 根据Id查找计算机
@@ -55,4 +55,6 @@ public interface ComputerService {
      * @return
      */
     public String getComputerById(String id);
+
+    void editComputerToRoom(String comId, String roomId);
 }

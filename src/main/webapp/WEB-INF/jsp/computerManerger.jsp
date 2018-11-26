@@ -18,6 +18,31 @@
     <link href="/static/css/now-ui-dashboard.css?v=1.0.1" rel="stylesheet" />
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="/static/demo/demo.css" rel="stylesheet" />
+    <style>
+        .back-nav{
+            background:rgba(0,0,0,.25);
+            position: fixed;
+            width:100%;
+            height:100%;
+            z-index:999;
+            top:0;
+            display: none;
+        }
+        .add-nav{
+            width: 50rem;
+            height: 45rem;
+            top: 0;
+            margin: auto;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            left: 0;
+        }
+        .add-body{
+            text-align: center;
+        }
+
+    </style>
 </head>
 
 <body class="">
@@ -37,25 +62,25 @@
         <div class="sidebar-wrapper">
             <ul class="nav">
                 <li>
-                    <a href="../examples/index.html">
+                    <a href="index">
                         <i class="now-ui-icons design_app"></i>
                         <p>首页</p>
                     </a>
                 </li>
                 <li class="active">
-                    <a href="../examples/computerManerger.html">
+                    <a href="computerManerger.html">
                         <i class="now-ui-icons education_atom"></i>
                         <p>机房管理</p>
                     </a>
                 </li>
                 <li>
-                    <a href="../examples/warn.html">
+                    <a href="warning">
                         <i class="now-ui-icons location_map-big"></i>
                         <p>警报管理</p>
                     </a>
                 </li>
                 <li>
-                    <a href="admin.jsp">
+                    <a href="admin">
                         <i class="now-ui-icons ui-1_bell-53"></i>
                         <p>机房负责人管理</p>
                     </a>
@@ -162,10 +187,10 @@
                                         位置
                                     </th>
                                     <th>
-                                        温度
+                                        温度(80%以上为故障)
                                     </th>
                                     <th>
-                                        Cpu使用率
+                                        Cpu使用率(90%以上为故障)
                                     </th>
                                     <th>
                                         使用状态
@@ -187,13 +212,13 @@
                                                     ${attr.computerId}
                                             </td>
                                             <td>
-                                                0
+                                                    ${attr.room}
                                             </td>
                                             <td>
-                                                    ${attr.temperature}
+                                                    ${attr.temperature}%
                                             </td>
                                             <td>
-                                                    ${attr.cpu}
+                                                    ${attr.cpu}%
                                             </td>
                                             <c:if test="${attr.useState==1}">
                                                 <td style="color:#ff0000">
@@ -207,12 +232,12 @@
                                             </c:if>
 
                                             <c:if test="${attr.lockState==1}">
-                                                <td style="color:#1beb11">
+                                                <td style="color:#ff0000">
                                                     锁定中
                                                 </td>
                                             </c:if>
                                             <c:if test="${attr.lockState==0}">
-                                                <td style="color:#ff0000">
+                                                <td style="color:#1beb11">
                                                     未锁定
                                                 </td>
                                             </c:if>
@@ -221,9 +246,9 @@
                                             </td>
                                             <td class="text-right">
                                                 <a href="#" id="${attr.id}" class="kaiji">开/关机</a>
-                                                <a href="">强制锁机</a>
-                                                <a href="#">解锁</a>
-                                                <a href="#">修改</a>
+                                                <a href="" class="lock" id="${attr.id}">强制锁机</a>
+                                                <a href="#" class="unlock" id="${attr.id}">解锁</a>
+                                                <a href="#" class="edit" id="${attr.id}">修改</a>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -268,7 +293,16 @@
                 </footer>
             </div>
         </div>
+        <!-- 新增窗口 -->
+        <div class="back-nav">
+            <div class="add-nav card">
+                <div class="add-body">
+
+                </div>
+            </div>
+        </div>
 </body>
+
 <!--   Core JS Files   -->
 <script src="/static/js/core/jquery.min.js"></script>
 <script src="/static/js/core/popper.min.js"></script>
@@ -342,5 +376,72 @@
             }
         })
     })
+
+    $('.lock').click(function(){
+        var id = $(this).attr("id");
+        $.ajax({
+            url:'lock',
+            data:{id:id},
+            success:function(res){
+                if(res.state=="0"){
+                    alert("下机/锁机成功")
+                    location.reload();
+                }else{
+                    alert(res.msg)
+                }
+                console.log(res);
+                return false;
+            }
+        })
+    })
+
+    $('.unlock').click(function(){
+        var id = $(this).attr("id");
+        $.ajax({
+            url:'unlock',
+            data:{id:id},
+            success:function(res){
+                if(res.state=="0"){
+                    alert("解锁成功")
+                    location.reload();
+                }else{
+                    alert(res.msg)
+                }
+                console.log(res);
+                return false;
+            }
+        })
+    })
+
+    $('.edit').click(function(){
+        var id = $(this).attr("id");
+        $.ajax({
+            url:'toEdit',
+            data:{id:id},
+            success:function(res){
+                $('.add-body').html(res);
+            },
+            error:function(){
+                $('.add-body').html("加载失败");
+            }
+
+        })
+
+        $('.back-nav').show();
+
+
+    })
+
+    $(function(){
+        $('.back-nav').bind("click", function (e) {
+            if($(e.target).closest(".add-nav").length>0){
+                $(".back-nav").show();
+            }else{
+                $(".back-nav").hide();
+            }
+        });
+    });
+
+
 </script>
 </html>

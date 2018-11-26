@@ -6,8 +6,10 @@ import com.example.login.model.ComputerOverview;
 import com.example.login.model.Machine;
 import com.example.login.service.ComputerService;
 import com.example.login.service.RoomService;
+import com.example.login.service.WarnService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.collections.bag.SynchronizedSortedBag;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -25,6 +27,8 @@ public class RoomControler {
     private RoomService roomService;
     @Resource
     private ComputerService computerService;
+    @Resource
+    private WarnService warnService;
 
     @RequestMapping(value="/index")
     public String index(Model model){
@@ -159,6 +163,93 @@ public class RoomControler {
     public Object lock(String id,Model model){
 
         return JSONObject.fromObject(computerService.lock(id));
+    }
+
+    /**
+     * 解锁
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value="/unlock")
+    public Object unlock(String id,Model model){
+
+        return JSONObject.fromObject(computerService.unlock(id,null,null,"1"));
+    }
+
+    /**
+     * 显示修改页面
+     * @return
+     */
+    @RequestMapping(value="/toEdit")
+    public Object toEdit(String id,Model model){
+
+        String res = roomService.queryRoom();
+        JSONObject json = JSONObject.fromObject(res);
+        JSONArray j = json.getJSONArray("data");
+        model.addAttribute("j",j);
+        model.addAttribute("id",id);
+        return "edit";
+    }
+
+    /**
+     * 显示修改页面
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value="/edit")
+    public String edit(String comId,String roomId,Model model){
+        computerService.editComputerToRoom(comId,roomId);
+        return "success";
+    }
+
+    /**
+     * 警报管理
+     * @return
+     */
+    @RequestMapping(value="/warning")
+    public String warning(Model model){
+
+        //待处理
+        String res = warnService.toBeProcessed();
+        JSONObject resJson = JSONObject.fromObject(res);
+        JSONArray resArr = resJson.getJSONArray("data");
+        String resCount = String.valueOf(resArr.size());
+        //自动处理
+        String resAuto = warnService.automaticProcessing();
+        JSONObject resAutoJson = JSONObject.fromObject(resAuto);
+        JSONArray  resAutoArr = resAutoJson.getJSONArray("data");
+        String resAutoCount = String.valueOf(resAutoArr.size());
+        //已处理
+        String resAlready = warnService.processed();
+        JSONObject resAlreadyJson = JSONObject.fromObject(resAlready);
+        JSONArray resAlreadyArr = resAlreadyJson.getJSONArray("data");
+        String resAlreadyCount = String.valueOf(resAlreadyArr.size());
+
+        model.addAttribute("resArr",resArr);
+        model.addAttribute("resAutoArr",resAutoArr);
+        model.addAttribute("resAlreadyArr",resAlreadyArr);
+        model.addAttribute("resCount",resCount);
+        model.addAttribute("resAutoCount",resAutoCount);
+        model.addAttribute("resAlreadyCount",resAlreadyCount);
+
+        return "warn";
+    }
+
+
+    /**
+     * 处理警报
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value="/doWarn")
+    public Object doWarn(String id,String computerId,Model model){
+
+        String res = warnService.handle(id,computerId);
+
+        JSONObject resJson = JSONObject.fromObject(res);
+        System.out.println(resJson);
+
+        return resJson;
     }
 
 }
