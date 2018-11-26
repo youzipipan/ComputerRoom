@@ -93,6 +93,7 @@ public class ComputerServiceImpl implements ComputerService {
         if (computer1 != null) {
             return newlyBuild(roomId);
         } else {
+            computer.setWrongTime("0");
             computer.setUseState("0");
             computer.setLockState("0");
             computer.setComputerId(computerId);
@@ -229,6 +230,7 @@ public class ComputerServiceImpl implements ComputerService {
                 String warnMsg = room.getName()+"的"+ computer.getComputerId() + "号计算机在非使用时间使用";
                 warn.setWarnMsg(warnMsg);
                 warnRepository.save(warn);
+                computerRepository.updates(machine.getId());
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("state", "2");
                 jsonObject.put("msg", "非使用时间使用");
@@ -301,6 +303,7 @@ public class ComputerServiceImpl implements ComputerService {
         }else {
             jsonObject.put("state", "0");
             jsonObject.put("msg", "负责人信息错误，解锁失败");
+
         }
         return jsonObject.toString();
     }

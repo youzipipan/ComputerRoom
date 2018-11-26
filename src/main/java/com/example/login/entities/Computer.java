@@ -32,5 +32,7 @@ public class Computer {
     private String temperature;//温度
     @Column
     private String cpu;//cpu使用率
+    @Column
+    private String wrongTime;//错误次数
 
 }

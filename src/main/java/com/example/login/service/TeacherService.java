@@ -1,6 +1,7 @@
 package com.example.login.service;
 
 import com.example.login.entities.Teacher;
+import net.sf.json.JSON;
 
 public interface TeacherService {
 
@@ -30,4 +31,12 @@ public interface TeacherService {
      * @return
      */
     String deleteTeacher (String id);
+
+    /**
+     * 权限
+     * @param teacherId
+     * @param roomId
+     * @return
+     */
+    JSON power (String teacherId , String roomId);
 }

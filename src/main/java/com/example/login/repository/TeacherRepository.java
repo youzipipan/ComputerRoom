@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-public interface TeacherRepository extends JpaRepository<Teacher,String> {
+public interface TeacherRepository extends JpaRepository<Teacher, String> {
 
     @Modifying
     @Query("update Teacher t set t.name=?1 ,t.phone=?2 ,t.userName=?3 ,t.passWord=?4 ,t.roomId=?5 where t.id=?6")
@@ -13,4 +13,7 @@ public interface TeacherRepository extends JpaRepository<Teacher,String> {
 
     @Query("select t from Teacher t where t.userName=?1 and t.passWord=?2")
     Teacher findTeacher(String userName, String passWord);
+
+    @Query("select t from Teacher t where t.id=?1")
+    Teacher findTeacherById(String teacherId);
 }

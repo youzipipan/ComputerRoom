@@ -1,9 +1,7 @@
 package com.example.login.service.impl;
 
-import com.example.login.entities.Teacher;
-import com.example.login.entities.Warn;
-import com.example.login.repository.TeacherRepository;
-import com.example.login.repository.WarnRepository;
+import com.example.login.entities.*;
+import com.example.login.repository.*;
 import com.example.login.service.WarnService;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -20,6 +18,12 @@ public class WarnServiceImpl implements WarnService {
 
     @Resource
     private TeacherRepository teacherRepository;
+
+    @Resource
+    private TeacherRoomRepository teacherRoomRepository;
+
+    @Resource
+    private ComputerRepository computerRepository;
 
     /**
      * 待处理的警报
@@ -83,10 +87,12 @@ public class WarnServiceImpl implements WarnService {
     public String handle(String id, String comId) {
 
         warnRepository.update(id);
-        List<Teacher> teacherList = teacherRepository.findAll();
-        Teacher teacher = new Teacher();
-        teacher.setName(teacherList.get(0).getName());
-        teacher.setPhone(teacherList.get(0).getPhone());
+        Computer computer = computerRepository.findByComputerId(comId);
+        List<TeacherRoom> teacherRoom = teacherRoomRepository.findTeacherRoom(computer.getRoomId());
+        Teacher teacher = teacherRepository.findTeacherById(teacherRoom.get(0).getTeacherId());
+        Teacher teacher1 = new Teacher();
+        teacher1.setName(teacher.getName());
+        teacher1.setPhone(teacher.getPhone());
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("state", "0");
         jsonObject.put("msg", "处理成功");
