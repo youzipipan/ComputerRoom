@@ -6,6 +6,7 @@ import com.example.login.model.ComputerOverview;
 import com.example.login.model.Machine;
 import com.example.login.service.ComputerService;
 import com.example.login.service.RoomService;
+import com.example.login.service.TeacherService;
 import com.example.login.service.WarnService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -29,6 +30,8 @@ public class RoomControler {
     private ComputerService computerService;
     @Resource
     private WarnService warnService;
+    @Resource
+    private TeacherService teacherService;
 
     @RequestMapping(value="/index")
     public String index(Model model){
@@ -250,6 +253,52 @@ public class RoomControler {
         System.out.println(resJson);
 
         return resJson;
+    }
+
+    /**
+     * 负责人页面
+     * @return
+     */
+    @RequestMapping(value="/admin")
+    public Object admin(String id,String computerId,Model model){
+
+//        String res = warnService.handle(id,computerId);
+//
+//        JSONObject resJson = JSONObject.fromObject(res);
+//        System.out.println(resJson);
+
+        return "admin";
+    }
+
+    /**
+     * 修改负责人信息页面
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value="/toEditAdmin")
+    public Object toEditAdmin(String id,String computerId,Model model){
+
+//        String res = teacherService.
+//
+//        JSONObject resJson = JSONObject.fromObject(res);
+//        System.out.println(resJson);
+        return "card";
+    }
+
+
+    /**
+     * 修改负责人信息
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value="/editAdmin")
+    public Object editAdmin(String id,String computerId,Model model){
+
+//        String res = warnService.handle(id,computerId);
+//
+//        JSONObject resJson = JSONObject.fromObject(res);
+//        System.out.println(resJson);
+        return null;
     }
 
 }
