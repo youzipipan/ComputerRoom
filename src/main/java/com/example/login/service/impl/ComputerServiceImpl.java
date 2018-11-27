@@ -315,8 +315,6 @@ public class ComputerServiceImpl implements ComputerService {
             jsonObject.put("state", "0");
             jsonObject.put("msg", "解锁成功");
         }else {
-            jsonObject.put("state", "0");
-            jsonObject.put("msg", "负责人信息错误，解锁失败");
             Warn warn = warnRepository.findWarnById(id);
             Computer computer = computerRepository.findComputerById(warn.getComputerId());
             String wrong = "";
@@ -331,6 +329,8 @@ public class ComputerServiceImpl implements ComputerService {
                 wrong = (String.valueOf(i));
                 computerRepository.updateWrong(wrong,computer.getId());
             }
+            jsonObject.put("state", "1");
+            jsonObject.put("msg", "负责人信息错误，解锁失败");
         }
         return jsonObject.toString();
     }
