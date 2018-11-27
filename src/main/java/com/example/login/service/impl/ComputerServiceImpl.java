@@ -324,8 +324,17 @@ public class ComputerServiceImpl implements ComputerService {
             if ("0".equals(computer.getWrongTime())) {
                 wrong = "1";
                 computerRepository.updateWrong(wrong, computer.getId());
-            } else if ("3".equals(computer.getWrongTime())) {
-                computerRepository.updateLock(computer.getId());
+            } else if ("2".equals(computer.getWrongTime())) {
+                Warn warn1 = new Warn();
+                warn1.setId(UUID.randomUUID().toString().replace("-",""));
+                warn1.setComputerId(computer.getId());
+                SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String date = dfs.format(new Date());
+                warn1.setCreateTime(date);
+                warn1.setDoState("0");
+                Room room = roomRepository.findRoomById(computer.getRoomId());
+                warn1.setWarnMsg(room.getName()+"的"+computer.getComputerId()+"号计算机遭到入侵，锁定状态连续输错三次");
+                warnRepository.save(warn1);
             } else {
                 int i = Integer.valueOf(computer.getWrongTime());
                 i = i + 1;
@@ -333,11 +342,11 @@ public class ComputerServiceImpl implements ComputerService {
                 computerRepository.updateWrong(wrong, computer.getId());
             }
             jsonObject.put("state", "1");
+            
             jsonObject.put("msg", "负责人信息错误，解锁失败");
         }
         return jsonObject.toString();
     }
-
 
     /**
      * 根据id查找计算机
