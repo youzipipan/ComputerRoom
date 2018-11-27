@@ -13,39 +13,43 @@
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="/static/demo/demo.css" rel="stylesheet" />
 
-
+<form action="editAdmin" method="post" id="myform">
         <div class="col-md-6 pr-1">
             <div class="form-group">
                 <label>负责人姓名</label>
-                <input type="text" class="form-control" placeholder="负责人姓名" value="">
+                <input type="text" class="form-control" placeholder="负责人姓名" value="" name="name">
             </div>
         </div>
         <div class="col-md-6 pr-1">
             <div class="form-group">
                 <label>负责人电话</label>
-                <input type="text" class="form-control" placeholder="负责人电话" value="">
+                <input type="text" class="form-control" placeholder="负责人电话" value="phone">
             </div>
         </div>
         <div class="col-md-6 pr-1">
             <div class="form-group">
                 <label>负责机房</label>
-                <input type="text" class="form-control" placeholder="负责机房" value="">
+                <select>
+                    <option value="">请选择机房</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                </select>
             </div>
         </div>
         <div class="col-md-6 pr-1">
             <div class="form-group">
                 <label>账号</label>
-                <input type="text" class="form-control" placeholder="账号" value="">
+                <input type="text" class="form-control" placeholder="账号" value="" name="userName">
             </div>
         </div>
         <div class="col-md-6 pr-1">
             <div class="form-group">
                 <label>密码</label>
-                <input type="text" class="form-control" placeholder="密码" value="">
+                <input type="text" class="form-control" placeholder="密码" value="" name="passWord">
             </div>
         </div>
 
-
+</form>
 <script src="/static/js/core/jquery.min.js"></script>
 <script src="/static/js/core/popper.min.js"></script>
 <script src="/static/js/core/bootstrap.min.js"></script>
@@ -60,5 +64,7 @@
 <script src="/static/js/now-ui-dashboard.js?v=1.0.1"></script>
 <!-- Now Ui Dashboard DEMO methods, don't include it in your project! -->
 <script src="/static/demo/demo.js"></script>
-
+<script>
+    $('')
+</script>
 </html>

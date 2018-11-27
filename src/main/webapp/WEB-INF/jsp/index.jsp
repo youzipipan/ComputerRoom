@@ -111,13 +111,13 @@
                         </a>
                     </li>
                     <li>
-                        <a href="../examples/warn.html">
+                        <a href="warning">
                             <i class="now-ui-icons location_map-big"></i>
                             <p>警报管理</p>
                         </a>
                     </li>
                     <li>
-                        <a href="admin.jsp">
+                        <a href="admin">
                             <i class="now-ui-icons ui-1_bell-53"></i>
                             <p>机房负责人管理</p>
                         </a>

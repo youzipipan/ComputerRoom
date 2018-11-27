@@ -12,6 +12,9 @@ public interface ComputerRepository extends JpaRepository<Computer, String> {
 
     List<Computer> findByRoomId(String roomId);
 
+    @Query("select c from Computer c where c.id=?1")
+    Computer findByIds(String Id);
+
     @Query("select c from Computer c where c.computerId=?1")
     Computer findByComputerId(String computerId);
 
@@ -41,6 +44,10 @@ public interface ComputerRepository extends JpaRepository<Computer, String> {
 
     @Query("select c from Computer c where c.id = ?1 ")
     Computer findComputerById(String id);
+
+    @Modifying
+    @Query("update Computer c set c.roomId=?2 where c.id=?1")
+    void updateComputerToRoom(String comId, String roomId);
 
     @Modifying
     @Query("update Computer c set c.useState='1' ,c.lockState='1' where c.computerId=?1")
