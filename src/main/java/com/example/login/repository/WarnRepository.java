@@ -21,4 +21,7 @@ public interface WarnRepository extends JpaRepository<Warn,String> {
     @Modifying
     @Query("update Warn w set w.doState = '1' where w.id = ?1")
     void update(String id);
+
+    @Query("select w from Warn w where w.id=?1")
+    Warn findWarnById(String id);
 }

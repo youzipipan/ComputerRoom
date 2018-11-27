@@ -36,7 +36,7 @@ public interface ComputerRepository extends JpaRepository<Computer, String> {
     void updateLock(String id);
 
     @Modifying
-    @Query("update Computer c set c.lockState='0' where c.id=?1")
+    @Query("update Computer c set c.lockState='0' ,c.wrongTime='0' where c.id=?1")
     void updateUnlock(String id);
 
     @Query("select c from Computer c where c.id = ?1 ")
@@ -45,4 +45,7 @@ public interface ComputerRepository extends JpaRepository<Computer, String> {
     @Modifying
     @Query("update Computer c set c.useState='1' ,c.lockState='1' where c.computerId=?1")
     void updates(String id);
+
+    @Query("update Computer c set c.wrongTime=?1 where c.id=?2")
+    void updateWrong(String wrong, String id);
 }

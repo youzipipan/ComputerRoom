@@ -303,6 +303,19 @@ public class ComputerServiceImpl implements ComputerService {
         }else {
             jsonObject.put("state", "0");
             jsonObject.put("msg", "负责人信息错误，解锁失败");
+            Warn warn = warnRepository.findWarnById(id);
+            Computer computer = computerRepository.findComputerById(warn.getComputerId());
+            String wrong = "";
+            if("0".equals(computer.getWrongTime())){
+                wrong = "1";
+            }else if("3".equals(computer.getWrongTime())){
+                computerRepository.updateLock(computer.getId());
+            } else{
+                int i = Integer.valueOf(computer.getWrongTime());
+                i = i+1;
+                wrong = (String.valueOf(i));
+            }
+            computerRepository.updateWrong(wrong,computer.getId());
 
         }
         return jsonObject.toString();
