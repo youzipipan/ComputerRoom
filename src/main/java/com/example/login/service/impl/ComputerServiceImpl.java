@@ -176,10 +176,10 @@ public class ComputerServiceImpl implements ComputerService {
                 return jsonObject.toString();
             } else if ("3".equals(machine.getState())) {
                 List<Computer> computerList = computerRepository.findAll();
-                computerList.forEach(e ->{
-                    if(e.getUseState()!=null && "1".equals(e.getUseState())){
+                computerList.forEach(e -> {
+                    if (e.getUseState() != null && "1".equals(e.getUseState())) {
                         String date = df.format(new Date());
-                        computerRepository.upfate3(date,e.getId());
+                        computerRepository.upfate3(date, e.getId());
                     }
                 });
                 JSONObject jsonObject = new JSONObject();
@@ -228,7 +228,7 @@ public class ComputerServiceImpl implements ComputerService {
                 warn.setCreateTime(date);
                 Computer computer = computerRepository.findComputerById(machine.getId());
                 Room room = roomRepository.findRoomById(computer.getRoomId());
-                String warnMsg = room.getName()+"的"+ computer.getComputerId() + "号计算机在非使用时间使用";
+                String warnMsg = room.getName() + "的" + computer.getComputerId() + "号计算机在非使用时间使用";
                 warn.setWarnMsg(warnMsg);
                 warnRepository.save(warn);
                 computerRepository.updates(machine.getId());
@@ -242,6 +242,7 @@ public class ComputerServiceImpl implements ComputerService {
 
     /**
      * 显示全部信息
+     *
      * @return
      */
     @Transactional
@@ -266,12 +267,13 @@ public class ComputerServiceImpl implements ComputerService {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("state", "0");
         jsonObject.put("msg", "开机成功");
-        jsonObject.put("data",computers);
+        jsonObject.put("data", computers);
         return jsonObject.toString();
     }
 
     /**
      * 强制下机/锁机
+     *
      * @param id
      * @return
      */
@@ -295,39 +297,40 @@ public class ComputerServiceImpl implements ComputerService {
 
     /**
      * 解锁
+     *
      * @param id
      * @return
      */
     @Transactional
     @Override
-    public String unlock(String id,String userName,String passWord,String user) {
+    public String unlock(String id, String userName, String passWord, String user) {
 
-        Teacher teacher = teacherRepository.findTeacher(userName,passWord);
+        Teacher teacher = teacherRepository.findTeacher(userName, passWord);
         JSONObject jsonObject = new JSONObject();
-        if(StringUtils.isNotBlank(user)){
+        if (StringUtils.isNotBlank(user)) {
             computerRepository.updateUnlock(id);
             jsonObject.put("state", "0");
             jsonObject.put("msg", "解锁成功");
             return jsonObject.toString();
         }
-        if(teacher!=null){
+        if (teacher != null) {
             computerRepository.updateUnlock(id);
             jsonObject.put("state", "0");
             jsonObject.put("msg", "解锁成功");
-        }else {
+        } else {
             Warn warn = warnRepository.findWarnById(id);
             Computer computer = computerRepository.findComputerById(warn.getComputerId());
             String wrong = "";
-            if("0".equals(computer.getWrongTime())){
+            if ("0".equals(computer.getWrongTime())) {
                 wrong = "1";
-                computerRepository.updateWrong(wrong,computer.getId());
-            }else if("3".equals(computer.getWrongTime())){
+                computerRepository.updateWrong(wrong, computer.getId());
+            } else if ("3".equals(computer.getWrongTime())) {
                 computerRepository.updateLock(computer.getId());
-            } else{
+            } else {
                 int i = Integer.valueOf(computer.getWrongTime());
-                i = i+1;
+                i = i + 1;
                 wrong = (String.valueOf(i));
-                computerRepository.updateWrong(wrong,computer.getId());
+                computerRepository.updateWrong(wrong, computer.getId());
             }
             jsonObject.put("state", "1");
             jsonObject.put("msg", "负责人信息错误，解锁失败");
@@ -347,11 +350,11 @@ public class ComputerServiceImpl implements ComputerService {
 
         Computer computer = computerRepository.findComputerById(id);
         JSONObject jsonObject = new JSONObject();
-        if(computer!=null){
+        if (computer != null) {
             jsonObject.put("state", "0");
             jsonObject.put("msg", "查询成功");
             jsonObject.put("data", computer);
-        }else {
+        } else {
             jsonObject.put("state", "1");
             jsonObject.put("msg", "未查询到计算机");
         }
@@ -360,11 +363,12 @@ public class ComputerServiceImpl implements ComputerService {
 
     /**
      * com更换教室
+     *
      * @param comId
      * @param roomId
      */
     @Override
     public void editComputerToRoom(String comId, String roomId) {
-        computerRepository.updateComputerToRoom(comId,roomId);
+        computerRepository.updateComputerToRoom(comId, roomId);
     }
 }
