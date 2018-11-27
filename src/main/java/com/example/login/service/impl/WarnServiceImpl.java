@@ -27,6 +27,7 @@ public class WarnServiceImpl implements WarnService {
 
     /**
      * 待处理的警报
+     *
      * @return
      */
     @Transactional
@@ -37,13 +38,14 @@ public class WarnServiceImpl implements WarnService {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("state", "0");
         jsonObject.put("msg", "成功");
-        jsonObject.put("count",warnList.size());
-        jsonObject.put("data",warnList);
+        jsonObject.put("count", warnList.size());
+        jsonObject.put("data", warnList);
         return jsonObject.toString();
     }
 
     /**
      * 已处理的警报
+     *
      * @return
      */
     @Transactional
@@ -54,13 +56,14 @@ public class WarnServiceImpl implements WarnService {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("state", "0");
         jsonObject.put("msg", "成功");
-        jsonObject.put("count",warnList.size());
-        jsonObject.put("data",warnList);
+        jsonObject.put("count", warnList.size());
+        jsonObject.put("data", warnList);
         return jsonObject.toString();
     }
 
     /**
      * 自动处理的警报
+     *
      * @return
      */
     @Transactional
@@ -71,13 +74,14 @@ public class WarnServiceImpl implements WarnService {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("state", "0");
         jsonObject.put("msg", "成功");
-        jsonObject.put("count",warnList.size());
-        jsonObject.put("data",warnList);
+        jsonObject.put("count", warnList.size());
+        jsonObject.put("data", warnList);
         return jsonObject.toString();
     }
 
     /**
      * 处理警报
+     *
      * @param id
      * @param comId
      * @return
@@ -89,7 +93,7 @@ public class WarnServiceImpl implements WarnService {
 
         Computer computer = computerRepository.findByIds(comId);
         List<TeacherRoom> teacherRoom = teacherRoomRepository.findTeacherRoom(computer.getRoomId());
-        if(teacherRoom==null || teacherRoom.size()<=0){
+        if (teacherRoom == null || teacherRoom.size() <= 0) {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("state", "1");
             jsonObject.put("msg", "该教室没有负责人，无法通知负责人进行处理");
@@ -102,8 +106,8 @@ public class WarnServiceImpl implements WarnService {
         warnRepository.update(id);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("state", "0");
-        jsonObject.put("msg", "处理成功,已通知"+teacher.getName()+"，联系方式："+teacher.getPhone()+"");
-        jsonObject.put("data",teacher1);
+        jsonObject.put("msg", "处理成功,已通知" + teacher.getName() + "，联系方式：" + teacher.getPhone() + "");
+        jsonObject.put("data", teacher1);
         return jsonObject.toString();
     }
 }

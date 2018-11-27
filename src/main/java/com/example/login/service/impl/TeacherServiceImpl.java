@@ -72,13 +72,13 @@ public class TeacherServiceImpl implements TeacherService {
      */
     @Transactional
     @Override
-    public String queryTeacher() {
+    public String queryTeacher(String id) {
 
-        List<Teacher> teacherList = teacherRepository.findAll();
+        Teacher teacher = teacherRepository.findTeacherById(id);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("state", "0");
-        jsonObject.put("msg", "添加成功");
-        jsonObject.put("data", teacherList);
+        jsonObject.put("msg", "查询成功");
+        jsonObject.put("data", teacher);
         return jsonObject.toString();
     }
 
@@ -118,7 +118,7 @@ public class TeacherServiceImpl implements TeacherService {
             return jsonObject;
         } else {
             TeacherRoom teacherRoom = new TeacherRoom();
-            teacherRoom.setId(UUID.randomUUID().toString().replace("-",""));
+            teacherRoom.setId(UUID.randomUUID().toString().replace("-", ""));
             teacherRoom.setRoomId(roomId);
             teacherRoom.setTeacherId(teacherId);
             JSONObject jsonObject = new JSONObject();
@@ -130,6 +130,7 @@ public class TeacherServiceImpl implements TeacherService {
 
     /**
      * 查询负责人
+     *
      * @return
      */
     @Transactional
@@ -138,7 +139,7 @@ public class TeacherServiceImpl implements TeacherService {
 
         List<Teacher> teacherList = teacherRepository.findAll();
         List<TeacherAndRoom> teacherAndRooms = new ArrayList<>();
-        teacherList.forEach(e ->{
+        teacherList.forEach(e -> {
             TeacherRoom teacherRoom = teacherRoomRepository.findByTeacherId(e.getId());
             Room room = roomRepository.findRoomById(teacherRoom.getRoomId());
             TeacherAndRoom teacherAndRoom = new TeacherAndRoom();

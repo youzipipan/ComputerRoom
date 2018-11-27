@@ -23,7 +23,7 @@ public interface TeacherService {
      * 查看负责人信息
      * @return
      */
-    String queryTeacher ();
+    String queryTeacher (String id);
 
     /**
      * 删除负责人
