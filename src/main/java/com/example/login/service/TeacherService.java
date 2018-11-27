@@ -39,4 +39,10 @@ public interface TeacherService {
      * @return
      */
     JSON power (String teacherId , String roomId);
+
+    /**
+     * 查询所有负责人
+     * @return
+     */
+    JSON findTeacher();
 }

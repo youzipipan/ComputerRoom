@@ -10,4 +10,6 @@ public interface TeacherRoomRepository extends JpaRepository<TeacherRoom,String>
 
     @Query("select t from TeacherRoom t where t.roomId=?1")
     List<TeacherRoom> findTeacherRoom(String roomId);
+
+    TeacherRoom findByTeacherId(String id);
 }

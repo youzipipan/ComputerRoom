@@ -1,7 +1,10 @@
 package com.example.login.service.impl;
 
+import com.example.login.entities.Room;
 import com.example.login.entities.Teacher;
 import com.example.login.entities.TeacherRoom;
+import com.example.login.model.TeacherAndRoom;
+import com.example.login.repository.RoomRepository;
 import com.example.login.repository.TeacherRepository;
 import com.example.login.repository.TeacherRoomRepository;
 import com.example.login.service.TeacherService;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,6 +26,9 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Resource
     private TeacherRoomRepository teacherRoomRepository;
+
+    @Resource
+    private RoomRepository roomRepository;
 
     /**
      * 添加负责人
@@ -119,5 +126,34 @@ public class TeacherServiceImpl implements TeacherService {
             jsonObject.put("msg", "授权成功！");
             return jsonObject;
         }
+    }
+
+    /**
+     * 查询负责人
+     * @return
+     */
+    @Transactional
+    @Override
+    public JSON findTeacher() {
+
+        List<Teacher> teacherList = teacherRepository.findAll();
+        List<TeacherAndRoom> teacherAndRooms = new ArrayList<>();
+        teacherList.forEach(e ->{
+            TeacherRoom teacherRoom = teacherRoomRepository.findByTeacherId(e.getId());
+            Room room = roomRepository.findRoomById(teacherRoom.getRoomId());
+            TeacherAndRoom teacherAndRoom = new TeacherAndRoom();
+            teacherAndRoom.setId(e.getId());
+            teacherAndRoom.setName(e.getName());
+            teacherAndRoom.setPhone(e.getPhone());
+            teacherAndRoom.setUserName(e.getUserName());
+            teacherAndRoom.setPassWord(e.getPassWord());
+            teacherAndRoom.setRoomName(room.getName());
+            teacherAndRooms.add(teacherAndRoom);
+        });
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("state", "0");
+        jsonObject.put("msg", "查询成功！");
+        jsonObject.put("data", teacherAndRooms);
+        return jsonObject;
     }
 }
