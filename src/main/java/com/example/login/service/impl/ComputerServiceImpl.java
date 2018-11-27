@@ -322,15 +322,15 @@ public class ComputerServiceImpl implements ComputerService {
             String wrong = "";
             if("0".equals(computer.getWrongTime())){
                 wrong = "1";
+                computerRepository.updateWrong(wrong,computer.getId());
             }else if("3".equals(computer.getWrongTime())){
                 computerRepository.updateLock(computer.getId());
             } else{
                 int i = Integer.valueOf(computer.getWrongTime());
                 i = i+1;
                 wrong = (String.valueOf(i));
+                computerRepository.updateWrong(wrong,computer.getId());
             }
-            computerRepository.updateWrong(wrong,computer.getId());
-
         }
         return jsonObject.toString();
     }
