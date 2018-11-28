@@ -117,6 +117,7 @@ public class TeacherServiceImpl implements TeacherService {
             jsonObject.put("msg", "该教室已有负责人！！！");
             return jsonObject;
         } else {
+            teacherRoomRepository.deleteByTeacherId(teacherId);
             TeacherRoom teacherRoom = new TeacherRoom();
             teacherRoom.setId(UUID.randomUUID().toString().replace("-", ""));
             teacherRoom.setRoomId(roomId);
