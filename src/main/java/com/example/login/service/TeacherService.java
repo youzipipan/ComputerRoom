@@ -2,6 +2,7 @@ package com.example.login.service;
 
 import com.example.login.entities.Teacher;
 import net.sf.json.JSON;
+import net.sf.json.JSONObject;
 
 public interface TeacherService {
 
@@ -38,11 +39,11 @@ public interface TeacherService {
      * @param roomId
      * @return
      */
-    JSON power (String teacherId , String roomId);
+    JSONObject power (String teacherId , String roomId);
 
     /**
      * 查询所有负责人
      * @return
      */
-    JSON findTeacher();
+    JSONObject findTeacher();
 }

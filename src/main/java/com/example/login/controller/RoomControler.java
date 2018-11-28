@@ -2,6 +2,7 @@ package com.example.login.controller;
 
 import com.example.login.ResponseUtils;
 import com.example.login.entities.Computer;
+import com.example.login.entities.Teacher;
 import com.example.login.model.ComputerOverview;
 import com.example.login.model.Machine;
 import com.example.login.service.ComputerService;
@@ -10,10 +11,9 @@ import com.example.login.service.TeacherService;
 import com.example.login.service.WarnService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import org.apache.commons.collections.bag.SynchronizedSortedBag;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -260,12 +260,12 @@ public class RoomControler {
      * @return
      */
     @RequestMapping(value="/admin")
-    public Object admin(String id,String computerId,Model model){
+    public Object admin(Model model){
 
-//        String res = warnService.handle(id,computerId);
-//
-//        JSONObject resJson = JSONObject.fromObject(res);
-//        System.out.println(resJson);
+        JSONObject resJson = teacherService.findTeacher();
+        JSONArray resArr = resJson.getJSONArray("data");
+
+        model.addAttribute("resArr",resArr);
 
         return "admin";
     }
@@ -274,14 +274,19 @@ public class RoomControler {
      * 修改负责人信息页面
      * @return
      */
-    @ResponseBody
     @RequestMapping(value="/toEditAdmin")
-    public Object toEditAdmin(String id,String computerId,Model model){
+    public Object toEditAdmin(String teacherId,Model model){
+        if(StringUtils.isNotBlank(teacherId)){
+            String res = teacherService.queryTeacher(teacherId);
+            JSONObject resJson = JSONObject.fromObject(res);
+            JSONObject dataJson = resJson.getJSONObject("data");
+            model.addAttribute("dataJson",dataJson);
+        }
+        String ress = roomService.queryRoom();
+        JSONObject resJsonss = JSONObject.fromObject(ress);
+        JSONArray dataJsonss = resJsonss.getJSONArray("data");
+        model.addAttribute("dataJsonss",dataJsonss);
 
-//        String res = teacherService.
-//
-//        JSONObject resJson = JSONObject.fromObject(res);
-//        System.out.println(resJson);
         return "card";
     }
 
@@ -292,13 +297,45 @@ public class RoomControler {
      */
     @ResponseBody
     @RequestMapping(value="/editAdmin")
-    public Object editAdmin(String id,String computerId,Model model){
+    public Object editAdmin(String teacherId,String roomId,String userName,String passWord,String name,String phone,Model model){
 
-//        String res = warnService.handle(id,computerId);
-//
-//        JSONObject resJson = JSONObject.fromObject(res);
-//        System.out.println(resJson);
-        return null;
+        if(StringUtils.isBlank(roomId)){
+            return ResponseUtils.fail(1,"缺少参数");
+        }
+        if(StringUtils.isBlank(userName)){
+            return ResponseUtils.fail(1,"缺少参数");
+        }
+        if(StringUtils.isBlank(passWord)){
+            return ResponseUtils.fail(1,"缺少参数");
+        }
+        if(StringUtils.isBlank(name)){
+            return ResponseUtils.fail(1,"缺少参数");
+        }
+        if(StringUtils.isBlank(phone)){
+            return ResponseUtils.fail(1,"缺少参数");
+        }
+
+        if(StringUtils.isNotBlank(teacherId)){
+            Teacher teacher = new Teacher();
+            teacher.setId(teacherId);
+            teacher.setName(name);
+            teacher.setPhone(phone);
+            teacher.setPassWord(passWord);
+            teacher.setUserName(userName);
+            teacherService.modifyTeacher(teacher);
+            JSONObject json = teacherService.power(teacherId,roomId);
+            return json;
+        }
+
+        Teacher teacher = new Teacher();
+        teacher.setName(name);
+        teacher.setPhone(phone);
+        teacher.setPassWord(passWord);
+        teacher.setUserName(userName);
+        teacherService.addTeacher(teacher);
+        JSONObject json = teacherService.power(teacher.getId(),roomId);
+
+        return json;
     }
 
 }

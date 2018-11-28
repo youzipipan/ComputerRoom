@@ -174,4 +174,29 @@ public class SimulatorController {
     }
 
 
+    /**
+     * 解锁
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value="/unlock")
+    public Object unlock(String computerId,String userName,String passWord,Model model){
+        if(StringUtils.isEmpty(computerId)){
+            return ResponseUtils.fail(1,"缺少必要参数");
+        }
+        String res = computerService.unlock(computerId,userName,passWord,null);
+        JSONObject json = JSONObject.fromObject(res);
+        String state = json.getString("state");
+        if(state.equals("0")){
+            return ResponseUtils.ok(json.getString("msg"),null);
+        }else if(state.equals("9")){
+            return ResponseUtils.ok(json.getString("msg"),null);
+        }else{
+            return ResponseUtils.fail(1,"没有这台计算机");
+        }
+
+    }
+
+
+
 }

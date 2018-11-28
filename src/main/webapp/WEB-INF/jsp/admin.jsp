@@ -25,15 +25,25 @@
             width:100%;
             height:100%;
             z-index:999;
+            top:0;
+            display: none;
         }
         .add-nav{
-            width:50rem;
-            height:100rem;
+            width: 50rem;
+            height: 45rem;
+            top: 0;
+            margin: auto;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            left: 0;
+
         }
         .add-body{
-            text-align:center;
+            text-align: center;
+            margin-left: 220px;
+            margin-top: 50px;
         }
-
     </style>
 </head>
 
@@ -189,48 +199,29 @@
                                             </th>
                                         </thead>
                                         <tbody>
+                                        <c:forEach items="${resArr}" var="attr" >
                                             <tr>
                                                 <td>
-                                                    Dakota Rice
+                                                    ${attr.name}
                                                 </td>
                                                 <td>
-                                                    Niger
+                                                        ${attr.phone}
                                                 </td>
                                                 <td>
-                                                    Oud-Turnhout
+                                                        ${attr.roomName}
                                                 </td>
                                                 <td>
-                                                    Oud-Turnhout
+                                                    ${attr.userName}
                                                 </td>
                                                 <td>
-                                                    Oud-Turnhout
+                                                        ${attr.passWord}
                                                 </td>
                                                 <td class="text-right">
-                                                    <a href="#">修改信息</a>
-                                                    <a href="#">删除负责人</a>
+                                                    <a href="#" class="editAdmin" data="${attr.id}">修改信息</a>
+                                                    <a href="#" class="deleteAdmin" data="${attr.id}">删除负责人</a>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>
-                                                    Dakota Rice
-                                                </td>
-                                                <td>
-                                                    Niger
-                                                </td>
-                                                <td>
-                                                    Oud-Turnhout
-                                                </td>
-                                                <td>
-                                                    Oud-Turnhout
-                                                </td>
-                                                <td>
-                                                    Oud-Turnhout
-                                                </td>
-                                                <td class="text-right">
-                                                    <a href="#">修改信息</a>
-                                                    <a href="#">删除负责人</a>
-                                                </td>
-                                            </tr>
+                                        </c:forEach>
                                         </tbody>
                                     </table>
                                 </div>
@@ -272,14 +263,14 @@
         </div>
     </div>
 
-<!-- 新增窗口 -->
-<div class="back-nav">
-    <div class="add-nav card">
-        <div class="add-body">
+            <!-- 新增窗口 -->
+            <div class="back-nav">
+                <div class="add-nav card">
+                    <div class="add-body">
 
-        </div>
-    </div>
-</div>
+                    </div>
+                </div>
+            </div>
 
 </body>
 <!--   Core JS Files   -->
@@ -301,13 +292,39 @@
     $(function(){
         $('#addAdmin').click(function(){
             $.ajax({
-                url:"card.jsp",
+                url:"toEditAdmin",
                 success:function(data){
                     $('.back-nav').show();
                     $('.add-body').html(data);
                 }
             })
         })
+
+
+        $('.editAdmin').click(function (){
+
+            var id = $(this).attr("data");
+            $.ajax({
+                url:'toEditAdmin',
+                data:{teacherId:id},
+                success:function (data) {
+                    $('.back-nav').show();
+                    $('.add-body').html(data);
+                }
+            })
+
+        })
+
     })
+
+    $(function(){
+        $('.back-nav').bind("click", function (e) {
+            if($(e.target).closest(".add-nav").length>0){
+                $(".back-nav").show();
+            }else{
+                $(".back-nav").hide();
+            }
+        });
+    });
 </script>
 </html>

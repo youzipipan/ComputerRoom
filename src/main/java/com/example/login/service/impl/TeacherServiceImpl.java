@@ -108,7 +108,7 @@ public class TeacherServiceImpl implements TeacherService {
      */
     @Transactional
     @Override
-    public JSON power(String teacherId, String roomId) {
+    public JSONObject power(String teacherId, String roomId) {
 
         List<TeacherRoom> teacherRoomList = teacherRoomRepository.findTeacherRoom(roomId);
         if (!teacherRoomList.isEmpty() && teacherRoomList.size() > 0) {
@@ -121,6 +121,7 @@ public class TeacherServiceImpl implements TeacherService {
             teacherRoom.setId(UUID.randomUUID().toString().replace("-", ""));
             teacherRoom.setRoomId(roomId);
             teacherRoom.setTeacherId(teacherId);
+            teacherRoomRepository.save(teacherRoom);
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("state", "0");
             jsonObject.put("msg", "授权成功！");
@@ -135,12 +136,23 @@ public class TeacherServiceImpl implements TeacherService {
      */
     @Transactional
     @Override
-    public JSON findTeacher() {
+    public JSONObject findTeacher() {
 
         List<Teacher> teacherList = teacherRepository.findAll();
         List<TeacherAndRoom> teacherAndRooms = new ArrayList<>();
         teacherList.forEach(e -> {
             TeacherRoom teacherRoom = teacherRoomRepository.findByTeacherId(e.getId());
+            if(teacherRoom==null){
+                TeacherAndRoom teacherAndRoom = new TeacherAndRoom();
+                teacherAndRoom.setId(e.getId());
+                teacherAndRoom.setName(e.getName());
+                teacherAndRoom.setPhone(e.getPhone());
+                teacherAndRoom.setUserName(e.getUserName());
+                teacherAndRoom.setPassWord(e.getPassWord());
+                teacherAndRoom.setRoomName("暂无");
+                teacherAndRooms.add(teacherAndRoom);
+                return;
+            }
             Room room = roomRepository.findRoomById(teacherRoom.getRoomId());
             TeacherAndRoom teacherAndRoom = new TeacherAndRoom();
             teacherAndRoom.setId(e.getId());

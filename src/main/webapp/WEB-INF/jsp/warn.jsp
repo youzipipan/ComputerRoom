@@ -394,11 +394,10 @@
                     alert(res.msg)
                 }
                 console.log(res);
-
+                location.reload();
             }
         })
-        location.reload();
-        return false;
+
     })
 </script>
 </html>
