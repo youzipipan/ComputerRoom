@@ -17,4 +17,7 @@ public interface TeacherRoomRepository extends JpaRepository<TeacherRoom,String>
     @Modifying
     @Query("delete from TeacherRoom t where t.teacherId=?1")
     void deleteByTeacherId(String teacherId);
+
+    @Query("select t from TeacherRoom t where t.roomId=?1")
+    TeacherRoom findTeacherRoomByRoomId(String roomId);
 }

@@ -106,8 +106,8 @@
 <div class="boxshadow">
     <div class="box">
         <div class="box-title">
-            <div>负责人账号：<input name="userName" id="userName"></div>
-            <div>负责人密码：<input name="passWord" id="passWord"></div>
+            <div>负责人账号：<input type="text" name="userName" id="userName"></div>
+            <div>负责人密码：<input type="password" name="passWord" id="passWord"></div>
         </div>
         <div class="choose">
             <div class="choose-close ee" data="">关机</div>

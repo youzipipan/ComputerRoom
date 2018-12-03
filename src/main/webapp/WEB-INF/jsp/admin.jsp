@@ -239,38 +239,6 @@
                         </div>
                     </div>
                 </div>
-
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <nav>
-                            <ul>
-                                <li>
-                                    <a href="#">
-                                        Creative Tim
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        About Us
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        Blog
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <div class="copyright">
-                            &copy;
-                            <script>
-                                document.write(new Date().getFullYear())
-                            </script>, Designed by
-                            Invision. Coded by
-                            Creative Tim.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
-                        </div>
-                    </div>
-                </footer>
             </div>
         </div>
 

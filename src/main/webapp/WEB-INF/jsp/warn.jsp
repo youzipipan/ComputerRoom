@@ -209,7 +209,12 @@
                                                     ${attr.createTime}
                                             </td>
                                             <td class="text-right">
-                                                <a href="" class="doSth" id="${attr.id}" data-comId="${attr.computerId}">一键处理</a>
+                                                <c:if test="${user.userName=='admin'}">
+                                                    <a href="" class="doSth" id="${attr.id}" data-comId="${attr.computerId}">一键处理</a>
+                                                </c:if>
+                                                <c:if test="${user.userName!='admin'}">
+                                                    无处理权限
+                                                </c:if>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -337,38 +342,6 @@
                         </div>
                     </div>
                 </div>
-
-                <footer class="footer">
-                    <div class="container-fluid">
-                        <nav>
-                            <ul>
-                                <li>
-                                    <a href="#">
-                                        Creative Tim
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        About Us
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        Blog
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <div class="copyright">
-                            &copy;
-                            <script>
-                                document.write(new Date().getFullYear())
-                            </script>, Designed by
-                            Invision. Coded by
-                            Creative Tim.More Templates <a href="http://www.cssmoban.com/" target="_blank" title="模板之家">模板之家</a> - Collect from <a href="http://www.cssmoban.com/" title="网页模板" target="_blank">网页模板</a>
-                        </div>
-                    </div>
-                </footer>
             </div>
         </div>
 </body>

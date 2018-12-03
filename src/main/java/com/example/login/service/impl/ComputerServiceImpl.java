@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -84,8 +85,8 @@ public class ComputerServiceImpl implements ComputerService {
     public String newlyBuild(String roomId) {
 
         Computer computer = new Computer();
-        int temperature = (int) (30 * Math.random() + 60);
-        int cpu = (int) (40 * Math.random() + 60);
+        int temperature = (int) (40 * Math.random() + 50);
+        int cpu = (int) (50 * Math.random() + 50);
         String computerId = getCard();
         Computer computer1 = computerRepository.findByComputerId(computerId);
         if (computer1 != null) {
@@ -201,7 +202,7 @@ public class ComputerServiceImpl implements ComputerService {
                     jsonObject.put("state", "0");
                     jsonObject.put("msg", "开机成功");
                     return jsonObject.toString();
-                }  else {
+                } else {
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("state", "1");
                     jsonObject.put("msg", "非正常操作");
@@ -304,6 +305,8 @@ public class ComputerServiceImpl implements ComputerService {
     @Override
     public String unlock(String id, String userName, String passWord, String user) {
 
+        Computer computer1 = computerRepository.findByIds(id);
+        TeacherRoom teacherRoom = teacherRoomRepository.findTeacherRoomByRoomId(computer1.getRoomId());
         Teacher teacher = teacherRepository.findTeacher(userName, passWord);
         JSONObject jsonObject = new JSONObject();
         if (StringUtils.isNotBlank(user)) {
@@ -312,7 +315,7 @@ public class ComputerServiceImpl implements ComputerService {
             jsonObject.put("msg", "解锁成功");
             return jsonObject.toString();
         }
-        if (teacher != null) {
+        if (teacher != null && teacherRoom.getTeacherId().equals(teacher.getId())) {
             computerRepository.updateUnlock(id);
             jsonObject.put("state", "0");
             jsonObject.put("msg", "解锁成功");
@@ -325,15 +328,19 @@ public class ComputerServiceImpl implements ComputerService {
                 computerRepository.updateWrong(wrong, computer.getId());
             } else if ("2".equals(computer.getWrongTime())) {
                 Warn warn1 = new Warn();
-                warn1.setId(UUID.randomUUID().toString().replace("-",""));
+                warn1.setId(UUID.randomUUID().toString().replace("-", ""));
                 warn1.setComputerId(computer.getId());
                 SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 String date = dfs.format(new Date());
                 warn1.setCreateTime(date);
                 warn1.setDoState("0");
                 Room room = roomRepository.findRoomById(computer.getRoomId());
-                warn1.setWarnMsg(room.getName()+"的"+computer.getComputerId()+"号计算机遭到入侵，锁定状态连续输错三次");
+                warn1.setWarnMsg(room.getName() + "的" + computer.getComputerId() + "号计算机遭到入侵，锁定状态连续输错三次");
                 warnRepository.save(warn1);
+                int i = Integer.valueOf(computer.getWrongTime());
+                i = i + 1;
+                wrong = (String.valueOf(i));
+                computerRepository.updateWrong(wrong, computer.getId());
             } else {
                 int i = Integer.valueOf(computer.getWrongTime());
                 i = i + 1;
@@ -348,6 +355,7 @@ public class ComputerServiceImpl implements ComputerService {
 
     /**
      * 根据id查找计算机
+     *
      * @param id
      * @return
      */
@@ -380,21 +388,21 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     @Override
-    public JSONObject showByTeacher(String teacherId) {
+    public String showByTeacher(String teacherId) {
 
         TeacherRoom teacherRoom = teacherRoomRepository.findByTeacherId(teacherId);
-        if(teacherRoom!=null){
+        if (teacherRoom != null) {
             List<Computer> computerlist = computerRepository.findByRoomId(teacherRoom.getRoomId());
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("state", "0");
             jsonObject.put("msg", "查询成功");
             jsonObject.put("data", computerlist);
-            return jsonObject;
-        }else {
+            return jsonObject.toString();
+        } else {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("state", "1");
             jsonObject.put("msg", "信息错误！");
-            return jsonObject;
+            return jsonObject.toString();
         }
     }
 }

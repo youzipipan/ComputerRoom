@@ -146,7 +146,12 @@ public class RoomControler {
         if(teacher==null){
             return "login";
         }
-        String res = computerService.showAll();
+        String res= "";
+        if("admin".equals(teacher.getUserName())){
+            res = computerService.showAll();
+        }else{
+            res = computerService.showByTeacher(teacher.getId());
+        }
 
         JSONObject jsonss = JSONObject.fromObject(res);
         if ("0".equals(jsonss.getString("state"))) {
@@ -458,6 +463,8 @@ public class RoomControler {
         JSONObject json = JSONObject.fromObject(res);
         return json;
     }
+
+
 
 
 }

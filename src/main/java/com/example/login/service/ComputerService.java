@@ -59,5 +59,5 @@ public interface ComputerService {
 
     void editComputerToRoom(String comId, String roomId);
 
-    JSONObject showByTeacher(String teacherId);
+    String showByTeacher(String teacherId);
 }
