@@ -179,4 +179,46 @@ public class TeacherServiceImpl implements TeacherService {
         jsonObject.put("data", teacherAndRooms);
         return jsonObject;
     }
+
+    /**
+     * 根据用户名密码查询负责人
+     * @param userName
+     * @param passWord
+     * @return
+     */
+    @Transactional
+    @Override
+    public JSONObject findByUserNameAndPassWord(String userName, String passWord) {
+
+        Teacher teacher = teacherRepository.findByUAndP(userName,passWord);
+        if(teacher!=null){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("state", "0");
+            jsonObject.put("msg", "查询成功！");
+            jsonObject.put("data", teacher);
+            return jsonObject;
+        }else {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("state", "1");
+            jsonObject.put("msg", "无此负责人！");
+            return jsonObject;
+        }
+    }
+
+    /**
+     * 修改密码
+     * @param passWordH
+     * @param passWordY
+     * @param userName
+     */
+    @Transactional
+    @Override
+    public JSONObject updateTeacher(String passWordH, String passWordY, String userName) {
+
+        teacherRepository.updateByUAndP(passWordH,passWordY,userName);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("state", "0");
+        jsonObject.put("msg", "修改成功！");
+        return jsonObject;
+    }
 }

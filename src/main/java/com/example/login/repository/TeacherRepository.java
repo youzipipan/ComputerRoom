@@ -16,4 +16,11 @@ public interface TeacherRepository extends JpaRepository<Teacher, String> {
 
     @Query("select t from Teacher t where t.id=?1")
     Teacher findTeacherById(String teacherId);
+
+    @Query("select t from Teacher t where t.userName=?1 and t.passWord=?2")
+    Teacher findByUAndP(String userName, String passWord);
+
+    @Modifying
+    @Query("update Teacher t set t.passWord=?1 where t.passWord=?2 and t.userName=?3")
+    void updateByUAndP(String passWordH, String passWordY, String userName);
 }

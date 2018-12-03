@@ -46,4 +46,20 @@ public interface TeacherService {
      * @return
      */
     JSONObject findTeacher();
+
+    /**
+     * 根据用户名密码查询负责人
+     * @param userName
+     * @param passWord
+     * @return
+     */
+    JSONObject findByUserNameAndPassWord(String userName, String passWord);
+
+    /**
+     * 修改密码
+     * @param passWordH
+     * @param passWordY
+     * @param userName
+     */
+    JSONObject updateTeacher(String passWordH, String passWordY, String userName);
 }
