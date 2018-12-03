@@ -1,6 +1,7 @@
 package com.example.login.service;
 
 import com.example.login.model.Machine;
+import net.sf.json.JSONObject;
 
 import java.text.ParseException;
 
@@ -57,4 +58,6 @@ public interface ComputerService {
     public String getComputerById(String id);
 
     void editComputerToRoom(String comId, String roomId);
+
+    JSONObject showByTeacher(String teacherId);
 }
