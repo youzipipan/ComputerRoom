@@ -41,7 +41,9 @@
             border: 1px solid #bfbfbf;
             height: 54px;
             width: 80%;
-            font-size: 15px;
+            font-size: 20px;
+            outline:none;
+            padding:0 10px;
         }
         .input-nav{
             text-align: center;
@@ -55,25 +57,88 @@
         }
         .sub{
             background: #f96332;
-            font-size:20px;
-            color:#fff;
+            font-size: 20px;
+            color: #fff;
+            width: 80%;
+            border-radius: 8px;
+            height: 54px;
+            border:none;
+            outline:none;
+            transition: .2s;
         }
+        .sub:hover{
+            background: #ff7e54;
+            font-size: 20px;
+            color: #fff;
+            width: 80%;
+            border-radius: 8px;
+            height: 54px;
+            border:none;
+            outline:none;
+            transition: .2s;
+        }
+        .sub:active{
+             background: #ce5730;
+             font-size: 20px;
+             color: #fff;
+             width: 80%;
+             border-radius: 8px;
+             height: 54px;
+             border:none;
+             outline:none;
+             transition: .2s;
+         }
+
     </style>
 </head>
 <body>
     <div class="login-nav">
-        <div class="title">管理员登录</div>
-        <label>教师/管理员账号：</label>
-        <div class="input-nav">
-            <input class="inp">
-        </div>
-        <label>密码：</label>
-        <div class="input-nav">
-            <input class="inp">
-        </div>
-        <div>
-            <input type="submit" value="登录" class="sub">
-        </div>
+        <form action="enter" method="post" id="myform">
+            <div class="title">管理员登录</div>
+            <label>教师/管理员账号：</label>
+            <div class="input-nav">
+                <input class="inp" type="text" name="userName" id="userName">
+            </div>
+            <label>密码：</label>
+            <div class="input-nav">
+                <input class="inp" type="password" name="passWord" id="passWord">
+            </div>
+            <div style="text-align: center;margin-top:20px;">
+                <input type="submit" value="登录" class="sub" >
+            </div>
+        </form>
     </div>
+<script src="/static/js/core/jquery.min.js"></script>
+<script>
+    $(function (){
+        $('.inp').blur(function (){
+            var i = $(this).val();
+            if (i.trim() == ''){
+                $(this).css("border","1px solid red");
+                return false;
+            }else{
+                $(this).css("border","1px solid #bfbfbf");
+            }
+
+        })
+
+        $('#myform').submit(function () {
+            var i = $('#userName').val();
+            var k = $('#passWord').val();
+            if (i.trim() == ''){
+                $('.inp').css("border","1px solid red");
+                return false;
+            }else{
+                $('.inp').css("border","1px solid #bfbfbf");
+            }
+            if (k.trim() == ''){
+                $('.inp').css("border","1px solid red");
+                return false;
+            }else{
+                $('.inp').css("border","1px solid #bfbfbf");
+            }
+        })
+    })
+</script>
 </body>
 </html>

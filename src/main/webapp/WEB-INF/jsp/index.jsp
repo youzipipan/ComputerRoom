@@ -116,12 +116,22 @@
                             <p>警报管理</p>
                         </a>
                     </li>
-                    <li>
-                        <a href="admin">
-                            <i class="now-ui-icons ui-1_bell-53"></i>
-                            <p>机房负责人管理</p>
-                        </a>
-                    </li>
+                    <c:if test="${user.userName=='admin'}">
+                        <li>
+                            <a href="admin">
+                                <i class="now-ui-icons ui-1_bell-53"></i>
+                                <p>机房负责人管理</p>
+                            </a>
+                        </li>
+                    </c:if>
+                    <c:if test="${user.userName!='admin'}">
+                        <li>
+                            <a href="editPass">
+                                <i class="now-ui-icons ui-1_bell-53"></i>
+                                <p>修改密码</p>
+                            </a>
+                        </li>
+                    </c:if>
                     <li class="active-pro">
                         <a href="#">
                             <i class="now-ui-icons arrows-1_cloud-download-93"></i>

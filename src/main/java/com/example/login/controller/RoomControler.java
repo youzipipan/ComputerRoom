@@ -37,23 +37,42 @@ public class RoomControler {
     private TeacherService teacherService;
 
     @RequestMapping(value = "/login")
-    public String login(Model model) {
+    public String login(Model model,HttpSession session) {
 
+        Teacher teacher = (Teacher)session.getAttribute("user");
+        if(teacher==null){
+            return "login";
+        }
+        return "index";
+    }
 
-        return "login";
+    /**
+     * 修改密码页面
+     * @param model
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "/editPass")
+    public String editPass(Model model,HttpSession session) {
+        Teacher teacher = (Teacher)session.getAttribute("user");
+        if(teacher==null){
+            return "login";
+        }
+        return "editPass";
     }
 
     /**
      * 修改密码
-     * @param model
+     * @param
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "")
+    @RequestMapping(value = "editPass2")
     public Object updateUser(String passWordY ,String passWordH ,HttpSession session) {
 
         Teacher teacher = (Teacher) session.getAttribute("user");
         if(passWordY.equals(teacher.getPassWord())){
+            teacher.setPassWord(passWordH);
             return teacherService.updateTeacher(passWordH,passWordY,teacher.getUserName());
         }else {
             return ResponseUtils.fail(1,"原密码错误！");
@@ -68,9 +87,11 @@ public class RoomControler {
             String res = json.getString("state");
             if("0".equals(res)){
                 Teacher teacher = new Teacher();
+                JSONObject teacherJson = json.getJSONObject("data");
                 HttpSession session = request.getSession();
                 teacher.setUserName(userName);
                 teacher.setPassWord(passWord);
+                teacher.setId(teacherJson.getString("id"));
                 session.setAttribute("user",teacher);
                 return "redirect:/admin/index";
             }else {
@@ -95,8 +116,11 @@ public class RoomControler {
 
 
     @RequestMapping(value = "/index")
-    public String index(Model model) {
-
+    public String index(Model model,HttpSession session) {
+        Teacher teacher = (Teacher)session.getAttribute("user");
+        if(teacher==null){
+            return "login";
+        }
         String res = computerService.overview();
 
         JSONObject jsonss = JSONObject.fromObject(res);
@@ -116,8 +140,11 @@ public class RoomControler {
 
 
     @RequestMapping(value = "/computerManerger")
-    public String computerManerger(Model model) {
-
+    public String computerManerger(Model model,HttpSession session) {
+        Teacher teacher = (Teacher)session.getAttribute("user");
+        if(teacher==null){
+            return "login";
+        }
         String res = computerService.showAll();
 
         JSONObject jsonss = JSONObject.fromObject(res);
@@ -279,8 +306,11 @@ public class RoomControler {
      * @return
      */
     @RequestMapping(value = "/warning")
-    public String warning(Model model) {
-
+    public String warning(Model model,HttpSession session) {
+        Teacher teacher = (Teacher)session.getAttribute("user");
+        if(teacher==null){
+            return "login";
+        }
         //待处理
         String res = warnService.toBeProcessed();
         JSONObject resJson = JSONObject.fromObject(res);
@@ -331,8 +361,11 @@ public class RoomControler {
      * @return
      */
     @RequestMapping(value = "/admin")
-    public Object admin(Model model) {
-
+    public Object admin(Model model,HttpSession session ) {
+        Teacher teacher = (Teacher)session.getAttribute("user");
+        if(teacher==null){
+            return "login";
+        }
         JSONObject resJson = teacherService.findTeacher();
         JSONArray resArr = resJson.getJSONArray("data");
 
