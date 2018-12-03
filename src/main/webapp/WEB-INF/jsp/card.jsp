@@ -112,11 +112,11 @@
                     alert(res.msg);
                 }
 
-                // parent.location.reload();
-                return false;
             }
 
         })
+        location.reload();
+        parent.location.reload();
         return false;
     })
 

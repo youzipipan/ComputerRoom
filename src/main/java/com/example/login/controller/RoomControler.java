@@ -33,6 +33,21 @@ public class RoomControler {
     @Resource
     private TeacherService teacherService;
 
+    @RequestMapping(value="/login")
+    public String login(Model model){
+
+
+        return "login";
+    }
+
+    @RequestMapping(value="/enter")
+    public String enter(Model model){
+
+
+        return "redirect:/admin/index";
+    }
+
+
     @RequestMapping(value="/index")
     public String index(Model model){
 
@@ -299,9 +314,9 @@ public class RoomControler {
     @RequestMapping(value="/editAdmin")
     public Object editAdmin(String teacherId,String roomId,String userName,String passWord,String name,String phone,Model model){
 
-        if(StringUtils.isBlank(roomId)){
-            return ResponseUtils.fail(1,"缺少参数");
-        }
+//        if(StringUtils.isBlank(roomId)){
+//            return ResponseUtils.fail(1,"缺少参数");
+//        }
         if(StringUtils.isBlank(userName)){
             return ResponseUtils.fail(1,"缺少参数");
         }
@@ -338,4 +353,16 @@ public class RoomControler {
         return json;
     }
 
+
+    /**
+     * 删除负责人信息页面
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value="/deleteAdmin")
+    public Object deleteAdmin(String teacherId,Model model){
+        String res = teacherService.deleteTeacher(teacherId);
+        JSONObject json = JSONObject.fromObject(res);
+        return json;
+    }
 }

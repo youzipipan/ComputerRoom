@@ -10,6 +10,7 @@ import com.example.login.repository.TeacherRoomRepository;
 import com.example.login.service.TeacherService;
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,6 +93,7 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public String deleteTeacher(String id) {
 
+        teacherRoomRepository.deleteByTeacherId(id);
         teacherRepository.deleteById(id);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("state", "0");
@@ -109,6 +111,13 @@ public class TeacherServiceImpl implements TeacherService {
     @Transactional
     @Override
     public JSONObject power(String teacherId, String roomId) {
+
+        if(StringUtils.isBlank(roomId)){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("state", "0");
+            jsonObject.put("msg", "授权成功");
+            return jsonObject;
+        }
 
         List<TeacherRoom> teacherRoomList = teacherRoomRepository.findTeacherRoom(roomId);
         if (!teacherRoomList.isEmpty() && teacherRoomList.size() > 0) {

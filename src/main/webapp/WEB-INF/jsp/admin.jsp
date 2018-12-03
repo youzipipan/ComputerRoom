@@ -315,6 +315,20 @@
 
         })
 
+        $('.deleteAdmin').click(function (){
+
+            var id = $(this).attr("data");
+            $.ajax({
+                url:'deleteAdmin',
+                data:{teacherId:id},
+                success:function (data) {
+                    alert(data.msg);
+                }
+            })
+            location.reload();
+        })
+
+
     })
 
     $(function(){
