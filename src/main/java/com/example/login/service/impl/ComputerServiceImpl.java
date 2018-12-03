@@ -1,16 +1,10 @@
 package com.example.login.service.impl;
 
-import com.example.login.entities.Computer;
-import com.example.login.entities.Room;
-import com.example.login.entities.Teacher;
-import com.example.login.entities.Warn;
+import com.example.login.entities.*;
 import com.example.login.model.ComputerInformation;
 import com.example.login.model.ComputerOverview;
 import com.example.login.model.Machine;
-import com.example.login.repository.ComputerRepository;
-import com.example.login.repository.RoomRepository;
-import com.example.login.repository.TeacherRepository;
-import com.example.login.repository.WarnRepository;
+import com.example.login.repository.*;
 import com.example.login.service.ComputerService;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
@@ -38,6 +32,9 @@ public class ComputerServiceImpl implements ComputerService {
 
     @Resource
     private RoomRepository roomRepository;
+
+    @Resource
+    private TeacherRoomRepository teacherRoomRepository;
 
     /**
      * 计算机总览
@@ -380,5 +377,24 @@ public class ComputerServiceImpl implements ComputerService {
     @Override
     public void editComputerToRoom(String comId, String roomId) {
         computerRepository.updateComputerToRoom(comId, roomId);
+    }
+
+    @Override
+    public JSONObject showByTeacher(String teacherId) {
+
+        TeacherRoom teacherRoom = teacherRoomRepository.findByTeacherId(teacherId);
+        if(teacherRoom!=null){
+            List<Computer> computerlist = computerRepository.findByRoomId(teacherRoom.getRoomId());
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("state", "0");
+            jsonObject.put("msg", "查询成功");
+            jsonObject.put("data", computerlist);
+            return jsonObject;
+        }else {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("state", "1");
+            jsonObject.put("msg", "信息错误！");
+            return jsonObject;
+        }
     }
 }

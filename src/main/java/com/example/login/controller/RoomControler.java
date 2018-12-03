@@ -57,6 +57,7 @@ public class RoomControler {
             return teacherService.updateTeacher(passWordH,passWordY,teacher.getUserName());
         }else {
             return ResponseUtils.fail(1,"原密码错误！");
+
         }
     }
 
