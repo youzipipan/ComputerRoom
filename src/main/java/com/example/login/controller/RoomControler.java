@@ -12,7 +12,6 @@ import com.example.login.service.WarnService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -464,7 +463,19 @@ public class RoomControler {
         return json;
     }
 
+    /**
+     * 退出
+     * @param request
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "/quit")
+    public Object quit(HttpSession session ,HttpServletRequest request) {
 
+        request.getSession().removeAttribute("user");
+        request.getSession().invalidate();
+        return "redirect:/admin/login";
+    }
 
 
 }
