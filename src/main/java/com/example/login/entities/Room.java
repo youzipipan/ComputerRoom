@@ -13,7 +13,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Room {
 
-    @GeneratedValue
     @Id
     private String id;//唯一主键
     @Column

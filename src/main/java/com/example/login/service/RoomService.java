@@ -1,6 +1,7 @@
 package com.example.login.service;
 
 import net.sf.json.JSON;
+import net.sf.json.JSONObject;
 
 public interface RoomService {
 
@@ -13,5 +14,7 @@ public interface RoomService {
      * @param roomName
      * @return
      */
-    JSON addRoom(String roomName);
+    JSONObject addRoom(String roomName);
+
+    String deleteRoom(String id);
 }

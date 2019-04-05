@@ -193,14 +193,23 @@ public class ComputerServiceImpl implements ComputerService {
         } else {
             SimpleDateFormat df = new SimpleDateFormat("HH:mm");
             Date begin = df.parse("08:00");
-            Date end = df.parse("16:59");
+            Date end = df.parse("18:59");
             Date now = df.parse(df.format(new Date()));
             if (now.after(begin) && now.before(end)) {
                 if ("0".equals(machine.getState())) {
                     computerRepository.update0(machine.getId());
+
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("state", "0");
                     jsonObject.put("msg", "开机成功");
+                    return jsonObject.toString();
+                }else if("1".equals(machine.getState())){
+                    SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String date = dfs.format(new Date());
+                    computerRepository.update1(machine.getId(), date);
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("state", "0");
+                    jsonObject.put("msg", "关机成功");
                     return jsonObject.toString();
                 } else {
                     JSONObject jsonObject = new JSONObject();

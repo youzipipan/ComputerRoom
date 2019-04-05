@@ -2,15 +2,18 @@ package com.example.login.controller;
 
 import com.example.login.ResponseUtils;
 import com.example.login.entities.Computer;
+import com.example.login.entities.Room;
 import com.example.login.entities.Teacher;
 import com.example.login.model.ComputerOverview;
 import com.example.login.model.Machine;
+import com.example.login.model.RoomData;
 import com.example.login.service.ComputerService;
 import com.example.login.service.RoomService;
 import com.example.login.service.TeacherService;
 import com.example.login.service.WarnService;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,6 +46,62 @@ public class RoomControler {
             return "login";
         }
         return "index";
+    }
+
+    /**
+     * 机房管理页面
+     * @param model
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "/roomManerger")
+    public String roomManerger(Model model,HttpSession session) {
+        Teacher teacher = (Teacher)session.getAttribute("user");
+        if(teacher==null){
+            return "login";
+        }
+        String res = roomService.queryRoom();
+        JSONObject resJson = JSONObject.fromObject(res);
+        JSONArray resArr = resJson.getJSONArray("data");
+        model.addAttribute("resArr",resArr);
+
+        return "roomManerger";
+    }
+
+    /**
+     * 删除机房页面
+     *
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/deleteRoom")
+    public Object deleteRoom(String roomId, Model model) {
+        String res = roomService.deleteRoom(roomId);
+        JSONObject json = JSONObject.fromObject(res);
+        return json;
+    }
+
+    /**
+     * 添加room页面
+     *
+     * @return
+     */
+    @RequestMapping(value = "/toEditRoom")
+    public Object toEditRoom(Model model) {
+        return "addRoom";
+    }
+
+    /**
+     * 添加room
+     *
+     * @return
+     */
+    @RequestMapping(value = "/addRoom")
+    public Object addRoom(String name) {
+        Room room = new Room();
+        room.setName(name);
+        JSONObject json = roomService.addRoom(name);
+        return json;
     }
 
     /**

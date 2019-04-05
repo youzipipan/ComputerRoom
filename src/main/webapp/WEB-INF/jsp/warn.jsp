@@ -42,10 +42,18 @@
                         <p>首页</p>
                     </a>
                 </li>
+                <c:if test="${user.userName=='admin'}">
+                    <li>
+                        <a href="roomManerger">
+                            <i class="now-ui-icons business_bank"></i>
+                            <p>机房管理</p>
+                        </a>
+                    </li>
+                </c:if>
                 <li>
                     <a href="computerManerger">
                         <i class="now-ui-icons education_atom"></i>
-                        <p>机房管理</p>
+                        <p>计算机管理</p>
                     </a>
                 </li>
                 <li class="active">
